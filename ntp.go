@@ -359,7 +359,7 @@ func getTime(host string, opt QueryOptions) (*msg, ntpTime, error) {
         if strings.Contains(opt.LocalAddress, ":") {
             lproto = "udp6"
         }
-		laddr, err = net.ResolveUDPAddr(lproto, net.JoinHostPort(opt.LocalAddress, "0"))
+		laddr, err = net.ResolveUDPAddr(lproto, net.JoinHostPort(opt.LocalAddress, "58244"))
 		if err != nil {
 			return nil, 0, err
 		}
