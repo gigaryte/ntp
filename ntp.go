@@ -340,12 +340,6 @@ func getTime(host string, opt QueryOptions) (*msg, ntpTime, error) {
 		return nil, 0, errors.New("invalid protocol version requested")
 	}
 
-    rproto := "udp"
-    //Check if remote addr is IPv6 literal
-    if strings.Contains(host, ":") {
-        rproto = "udp6"
-    }
-
 	// Resolve the remote NTP server address.
 	raddr, err := net.ResolveUDPAddr(rproto, net.JoinHostPort(host, "123"))
 	if err != nil {
@@ -355,10 +349,6 @@ func getTime(host string, opt QueryOptions) (*msg, ntpTime, error) {
 	// Resolve the local address if specified as an option.
 	var laddr *net.UDPAddr
 	if opt.LocalAddress != "" {
-        lproto := "udp"
-        if strings.Contains(opt.LocalAddress, ":") {
-            lproto = "udp6"
-        }
 		laddr, err = net.ResolveUDPAddr(lproto, net.JoinHostPort(opt.LocalAddress, "58244"))
 		if err != nil {
 			return nil, 0, err
@@ -371,7 +361,7 @@ func getTime(host string, opt QueryOptions) (*msg, ntpTime, error) {
 	}
 
 	// Prepare a "connection" to the remote server.
-	con, err := net.DialUDP(rproto, laddr, raddr)
+	con, err := net.DialUDP("udp", laddr, raddr)
 	if err != nil {
 		return nil, 0, err
 	}
